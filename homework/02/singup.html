@@ -1,7 +1,60 @@
-<html>
+<html lang="zh-Hant">
 <body>
-<h1>黃信惟的個人網頁</h1>
-
-
+    <form method="post" action="Home/Login" autocomplete="off">
+        <fieldset>
+            <legend>個人資料</legend>
+            帳號:<input type="text" name="txtUid" value="Out"><br>
+            密碼:<input type="password" name="txtPwd"><br>
+            人數:<input type="number" id="txtNamber" value="1" step="1" max="10" min="1"><br>
+            薪資:<input type="range" id="txtSalary" onchange="fnChange();" value="25000" step="1000" max="70000" min="22000"><span id="span_salary">25000</span><br>
+            日期:<input type="date" name="txtDate"><br>
+            時間:<input type="time" name="txtTime"><br>
+            月份:<input type="month" name="txtMonth"><br>
+            周次:<input type="week" name="txtWeek"><br>
+            本地日期與時間:<input type="datetime-local" name="txtDatetime"><br>
+            性別:<input type="radio" name="radGender" value="1" checked>男<input type="radio" name="radGender" value="0">女<hr>
+            學歷:<input type="radio" name="radEdu" value="1">國小<input type="radio" name="radEdu" value="2">國中<input type="radio" name="radEdu" value="3">高中職<input type="radio" name="radEdu" value="4" checked>大學<input type="radio" name="radEdu" value="5">碩博士<hr>
+            <p>性別</p>
+            <select name="selGender">
+                <option value="1" selected>男</option>
+                <option value="0">女</option>
+            </select>
+        </fieldset>
+    <br>
+    <hr>
+        <form>
+            <fieldset>
+                <legend>建議</legend>
+                姓名:<input type="text" name="txtName"><br>
+                性別:<input type="radio" name="radGender" value="1" checked>男
+                    <input type="radio" name="radGender" value="0">女<br>
+                訊息:<br>
+                <textarea rows="4" cols="30" name="txtName">請填寫意見</textarea><br>
+                <input type="submit" value="提交">
+                <input type="reset" value="重設">
+            </fieldset>
+        </form>
+        <hr>
+    <fieldset>
+        <legend>興趣</legend>
+        <p>請問玩過那些電玩類型(按住shift/ctrl可多選)</p>
+        <select name="sekGame" multiple>
+            <option value="phone" selected>手遊</option>
+            <option value="windows">桌機</option>
+            <option value="xbox">XBox One</option>
+            <option value="ps" selected>PS 5</option>
+        </select>
+        <hr>
+        <input type="submit" value="提交">
+        <input type="reset" value="重設">
+        <input type="button" value="說明" onclick="fnHelp();">
+    </fieldset>
+    </form>
+    <br>
+    <form enctype="multipart/form-data" method="post" accept="image/gif,image/jpeg" action="Home/Uplad">
+        請選擇檔案<input type="file" name="txtFile"><br>
+        <input type="submit" value="檔案上傳">
+        <input type="reset" value="重設">
+    </form>
 </body>
 </html>
