@@ -1,0 +1,188 @@
+<!-- templates/show_post.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ post.title }}</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        .post { border: 1px solid #ddd; padding: 20px; border-radius: 5px; }
+        .meta { color: #666; font-size: 0.9em; margin-bottom: 10px; }
+        .actions { margin-top: 20px; }
+        .btn { padding: 8px 16px; margin-right: 10px; text-decoration: none; border-radius: 3px; }
+        .btn-danger { background-color: #dc3545; color: white; }
+        .btn-primary { background-color: #007bff; color: white; }
+        .btn-secondary { background-color: #6c757d; color: white; }
+    </style>
+</head>
+<body>
+    <div class="post">
+        <h1>{{ post.title }}</h1>
+        <div class="meta">作者: {{ post.username }}</div>
+        <div>{{ post.body }}</div>
+        
+        <div class="actions">
+            <a href="/" class="btn btn-secondary">返回首頁</a>
+            {% if is_author %}
+                <a href="/post/{{ post.id }}/delete" class="btn btn-danger" 
+                   onclick="return confirm('確定要刪除這篇文章嗎？')">刪除文章</a>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
+
+<!-- templates/confirm_delete.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>確認刪除 - {{ post.title }}</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        .warning { 
+            background-color: #fff3cd; 
+            border: 1px solid #ffeaa7; 
+            padding: 20px; 
+            border-radius: 5px; 
+            margin-bottom: 20px;
+        }
+        .post-preview { 
+            border: 1px solid #ddd; 
+            padding: 15px; 
+            border-radius: 5px; 
+            background-color: #f8f9fa;
+            margin: 20px 0;
+        }
+        .btn { padding: 10px 20px; margin-right: 10px; text-decoration: none; border-radius: 5px; }
+        .btn-danger { background-color: #dc3545; color: white; }
+        .btn-secondary { background-color: #6c757d; color: white; }
+        form { display: inline; }
+        button { padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; }
+        .btn-danger-button { background-color: #dc3545; color: white; }
+    </style>
+</head>
+<body>
+    <div class="warning">
+        <h2>⚠️ 確認刪除文章</h2>
+        <p>您確定要刪除以下文章嗎？此操作無法復原。</p>
+    </div>
+    
+    <div class="post-preview">
+        <h3>{{ post.title }}</h3>
+        <p><strong>作者:</strong> {{ post.username }}</p>
+        <p>{{ post.body[:100] }}{% if post.body|length > 100 %}...{% endif %}</p>
+    </div>
+    
+    <div>
+        <a href="/post/{{ post.id }}" class="btn btn-secondary">取消</a>
+        <form method="post" action="/post/{{ post.id }}/delete">
+            <button type="submit" class="btn-danger-button">確認刪除</button>
+        </form>
+    </div>
+</body>
+</html>
+
+<!-- templates/my_posts.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>我的文章</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        .header { margin-bottom: 30px; }
+        .post { border: 1px solid #ddd; padding: 15px; margin-bottom: 15px; border-radius: 5px; }
+        .post-title { margin: 0 0 10px 0; }
+        .post-meta { color: #666; font-size: 0.9em; margin-bottom: 10px; }
+        .post-actions { margin-top: 10px; }
+        .btn { padding: 6px 12px; margin-right: 8px; text-decoration: none; border-radius: 3px; font-size: 0.9em; }
+        .btn-primary { background-color: #007bff; color: white; }
+        .btn-danger { background-color: #dc3545; color: white; }
+        .btn-secondary { background-color: #6c757d; color: white; }
+        .no-posts { text-align: center; color: #666; margin-top: 50px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>我的文章</h1>
+        <a href="/" class="btn btn-secondary">返回首頁</a>
+        <a href="/post/new" class="btn btn-primary">發表新文章</a>
+    </div>
+    
+    {% if posts %}
+        {% for post in posts %}
+        <div class="post">
+            <h3 class="post-title">{{ post.title }}</h3>
+            <div class="post-meta">發表時間: 文章 ID {{ post.id }}</div>
+            <p>{{ post.body[:150] }}{% if post.body|length > 150 %}...{% endif %}</p>
+            <div class="post-actions">
+                <a href="/post/{{ post.id }}" class="btn btn-primary">查看</a>
+                <a href="/post/{{ post.id }}/delete" class="btn btn-danger" 
+                   onclick="return confirm('確定要刪除這篇文章嗎？')">刪除</a>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="no-posts">
+            <h3>您還沒有發表任何文章</h3>
+            <p><a href="/post/new" class="btn btn-primary">立即發表第一篇文章</a></p>
+        </div>
+    {% endif %}
+</body>
+</html>
+
+<!-- 更新 templates/list.html，加入刪除按鈕和我的文章連結 -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>部落格首頁</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        .header { margin-bottom: 30px; border-bottom: 2px solid #eee; padding-bottom: 20px; }
+        .nav { margin-bottom: 20px; }
+        .post { border: 1px solid #ddd; padding: 15px; margin-bottom: 15px; border-radius: 5px; }
+        .post-title { margin: 0 0 10px 0; }
+        .post-meta { color: #666; font-size: 0.9em; margin-bottom: 10px; }
+        .post-actions { margin-top: 10px; }
+        .btn { padding: 6px 12px; margin-right: 8px; text-decoration: none; border-radius: 3px; }
+        .btn-primary { background-color: #007bff; color: white; }
+        .btn-danger { background-color: #dc3545; color: white; }
+        .btn-secondary { background-color: #6c757d; color: white; }
+        .btn-success { background-color: #28a745; color: white; }
+        .user-info { color: #28a745; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>部落格</h1>
+        <div class="nav">
+            {% if user %}
+                <span class="user-info">歡迎, {{ user.username }}!</span>
+                <a href="/post/new" class="btn btn-primary">發表文章</a>
+                <a href="/my-posts" class="btn btn-success">我的文章</a>
+                <a href="/logout" class="btn btn-secondary">登出</a>
+            {% else %}
+                <a href="/login" class="btn btn-primary">登入</a>
+                <a href="/signup" class="btn btn-success">註冊</a>
+            {% endif %}
+        </div>
+    </div>
+    
+    {% if posts %}
+        {% for post in posts %}
+        <div class="post">
+            <h3 class="post-title">{{ post.title }}</h3>
+            <div class="post-meta">作者: {{ post.username }}</div>
+            <p>{{ post.body[:200] }}{% if post.body|length > 200 %}...{% endif %}</p>
+            <div class="post-actions">
+                <a href="/post/{{ post.id }}" class="btn btn-primary">閱讀全文</a>
+                {% if user and user.username == post.username %}
+                    <a href="/post/{{ post.id }}/delete" class="btn btn-danger" 
+                       onclick="return confirm('確定要刪除這篇文章嗎？')">刪除</a>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <p>目前還沒有任何文章。</p>
+    {% endif %}
+</body>
+</html>
