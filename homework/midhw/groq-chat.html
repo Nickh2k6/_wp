@@ -286,9 +286,8 @@
         </div>
 
         <div class="api-key-section">
-            <input type="password" class="api-key-input" placeholder="API Key 已預設，可以直接開始對話" id="apiKeyInput">
             <div class="model-selector">
-                <label for="modelSelect">模型:</label>
+                <label for="modelSelect">選擇 AI 模型:</label>
                 <select id="modelSelect" class="model-select">
                     <option value="llama-3.3-70b-versatile">Llama 3.3 70B</option>
                     <option value="llama-3.1-8b-instant">Llama 3.1 8B (快速)</option>
@@ -342,7 +341,6 @@
             }
 
             initElements() {
-                this.apiKeyInput = document.getElementById('apiKeyInput');
                 this.modelSelect = document.getElementById('modelSelect');
                 this.chatMessages = document.getElementById('chatMessages');
                 this.chatInput = document.getElementById('chatInput');
@@ -351,11 +349,6 @@
             }
 
             bindEvents() {
-                this.apiKeyInput.addEventListener('input', () => {
-                    this.apiKey = this.apiKeyInput.value.trim();
-                    this.saveApiKey();
-                });
-
                 this.chatInput.addEventListener('keydown', (e) => {
                     if (e.key === 'Enter' && !e.shiftKey) {
                         e.preventDefault();
@@ -373,17 +366,11 @@
             }
 
             loadApiKey() {
-                const defaultKey = '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';
-                const savedKey = localStorage.getItem('groq_api_key') || defaultKey;
-                
-                this.apiKey = savedKey;
-                this.apiKeyInput.value = savedKey;
+                this.apiKey = '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';
             }
 
             saveApiKey() {
-                if (this.apiKey) {
-                    localStorage.setItem('groq_api_key', this.apiKey);
-                }
+                // API Key 已固定，無需保存
             }
 
             autoResizeTextarea() {
@@ -397,7 +384,7 @@
                 if (!message || this.isLoading) return;
                 
                 if (!this.apiKey) {
-                    this.showError('請先輸入 Groq API Key');
+                    this.showError('API 配置錯誤，請聯繫管理員');
                     return;
                 }
 
